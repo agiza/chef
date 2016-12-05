@@ -166,6 +166,16 @@ class Chef
       end
     end
 
+    class LaunchdHashProperty < Base
+      def id
+        12
+      end
+
+      def target
+        "launchd_hash_property.html"
+      end
+    end
+
     class ResourceCloning < Base
       def id
         3694
