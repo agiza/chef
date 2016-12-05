@@ -651,6 +651,12 @@ class Chef
       # override their own properties.
       return unless [ Object, BasicObject, Kernel, Chef::Resource ].include?(declared_in.instance_method(name).owner)
 
+      # Allow top-level Chef::Resource proprties, such as `name`, to be overridden.
+      # As of this writing, `name` is the only Chef::Resource property created with the
+      # `property` definition, but this will allow for future properties to be extended
+      # as needed.
+      return if Chef::Resource.properties.keys.include?(name)
+
       # Emit the deprecation.
       resource_name = declared_in.respond_to?(:resource_name) ? declared_in.resource_name : declared_in
       Chef.deprecated(:property_name_collision, "Property `#{name}` of resource `#{resource_name}` overwrites an existing method. " \
